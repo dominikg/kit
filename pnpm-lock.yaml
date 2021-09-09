@@ -14,12 +14,14 @@ importers:
       '@typescript-eslint/parser': ^4.28.4
       action-deploy-docs: github:sveltejs/action-deploy-docs#main
       dotenv: ^10.0.0
+      esbuild: ^0.12.25
       eslint: ^7.31.0
       eslint-plugin-import: ^2.23.4
       eslint-plugin-svelte3: ^3.2.0
       playwright-chromium: ^1.10.0
       prettier: 2.2.1
       rollup: ^2.55.0
+      tsconfck: ^1.0.0-7
       typescript: ^4.3.5
     devDependencies:
       '@changesets/cli': 2.16.0
@@ -32,12 +34,14 @@ importers:
       '@typescript-eslint/parser': 4.28.4_eslint@7.31.0+typescript@4.3.5
       action-deploy-docs: github.com/sveltejs/action-deploy-docs/321fe3aec0f4484eaa42e32283025106161cc296
       dotenv: 10.0.0
+      esbuild: 0.12.25
       eslint: 7.31.0
       eslint-plugin-import: 2.23.4_eslint@7.31.0
       eslint-plugin-svelte3: 3.2.0_eslint@7.31.0
       playwright-chromium: 1.10.0
       prettier: 2.2.1
       rollup: 2.55.0
+      tsconfck: 1.0.0-7_typescript@4.3.5
       typescript: 4.3.5
 
   .github/actions/env:
@@ -1758,6 +1762,12 @@ packages:
     hasBin: true
     requiresBuild: true
     dev: false
+
+  /esbuild/0.12.25:
+    resolution: {integrity: sha512-woie0PosbRSoN8gQytrdCzUbS2ByKgO8nD1xCZkEup3D9q92miCze4PqEI9TZDYAuwn6CruEnQpJxgTRWdooAg==}
+    hasBin: true
+    requiresBuild: true
+    dev: true
 
   /esbuild/0.12.5:
     resolution: {integrity: sha512-vcuP53pA5XiwUU4FnlXM+2PnVjTfHGthM7uP1gtp+9yfheGvFFbq/KyuESThmtoHPUrfZH5JpxGVJIFDVD1Egw==}
@@ -3932,6 +3942,19 @@ packages:
 
   /ts-interface-checker/0.1.13:
     resolution: {integrity: sha512-Y/arvbn+rrz3JCKl9C4kVNfTfSm2/mEp5FSz5EsZSANGPSlQrpRI5M4PKF+mJnE52jOO90PnPSc3Ur3bTQw0gA==}
+    dev: true
+
+  /tsconfck/1.0.0-7_typescript@4.3.5:
+    resolution: {integrity: sha512-Jiwn8kHYk7+6dNLzBfqDQKsL9IF6oEk33YQ6U9u3MCRYbMYEsnE2QXnxUrlSlJBjM46cvVss7FBpayZsOX+CLA==}
+    engines: {node: ^12.20 || ^14.13.1 || >= 16, pnpm: '>=6.7.0'}
+    hasBin: true
+    peerDependencies:
+      typescript: ^4.3.5
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+    dependencies:
+      typescript: 4.3.5
     dev: true
 
   /tsconfig-paths/3.9.0:

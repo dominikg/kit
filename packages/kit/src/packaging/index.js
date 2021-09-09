@@ -79,7 +79,7 @@ export async function make_package(config, cwd = process.cwd()) {
 			}
 		} else if (ext === '.ts') {
 			out_file = file.slice(0, -'.ts'.length) + '.js';
-			out_contents = await transpile_ts(filename, source);
+			out_contents = await transpile_with_esbuild(filename, source);
 		} else {
 			out_file = file;
 			out_contents = source;
@@ -120,59 +120,6 @@ export async function make_package(config, cwd = process.cwd()) {
 }
 
 /**
- * @param {string} filename
- * @param {string} source
- */
-async function transpile_ts(filename, source) {
-	const ts = await try_load_ts();
-	return ts.transpileModule(source, {
-		compilerOptions: load_tsconfig(filename, ts),
-		fileName: filename
-	}).outputText;
-}
-
-async function try_load_ts() {
-	try {
-		return (await import('typescript')).default;
-	} catch (e) {
-		throw new Error(
-			'You need to install TypeScript if you want to transpile TypeScript files and/or generate type definitions'
-		);
-	}
-}
-
-/**
- * @param {string} filename
- * @param {import('typescript')} ts
- */
-function load_tsconfig(filename, ts) {
-	const filedir = path.dirname(filename);
-	const tsconfig_filename = ts.findConfigFile(filedir, ts.sys.fileExists);
-
-	if (!tsconfig_filename) {
-		throw new Error('Failed to locate tsconfig or jsconfig');
-	}
-
-	const { error, config } = ts.readConfigFile(tsconfig_filename, ts.sys.readFile);
-
-	if (error) {
-		throw new Error('Malformed tsconfig\n' + JSON.stringify(error, null, 2));
-	}
-
-	// Do this so TS will not search for initial files which might take a while
-	config.include = [];
-	config.files = [];
-	const { options } = ts.parseJsonConfigFileContent(
-		config,
-		ts.sys,
-		path.dirname(tsconfig_filename),
-		{ sourceMap: false },
-		tsconfig_filename
-	);
-	return options;
-}
-
-/**
  * @param {{ include: string[]; exclude: string[] }} options
  * @returns {(str: string) => boolean}
  */
@@ -195,7 +142,7 @@ function write(file, contents) {
  */
 export async function emit_dts(config) {
 	const require = createRequire(import.meta.url);
-	const emit = await try_load_svelte2tsx();
+	const emit = await try_load_svelte2tsx_emit_dts();
 	await emit({
 		libRoot: config.kit.files.lib,
 		svelteShimsPath: require.resolve('svelte2tsx/svelte-shims.d.ts'),
@@ -203,8 +150,8 @@ export async function emit_dts(config) {
 	});
 }
 
-async function try_load_svelte2tsx() {
-	const svelte2tsx = await load();
+async function try_load_svelte2tsx_emit_dts() {
+	const [svelte2tsx] = await try_load(['svelte2tsx'],'You need to install $pkg if you want to generate type definitions');
 	const emit_dts = svelte2tsx.emitDts;
 	if (!emit_dts) {
 		throw new Error(
@@ -212,15 +159,32 @@ async function try_load_svelte2tsx() {
 		);
 	}
 	return emit_dts;
+}
 
-	async function load() {
-		try {
-			return await import('svelte2tsx');
-		} catch (e) {
-			throw new Error(
-				'You need to install svelte2tsx and typescript if you want to generate type definitions\n' +
-					e
-			);
-		}
+const tsconfck_cache = new Map();
+/**
+ * @param {string} filename
+ * @param {string} source
+ */
+async function transpile_with_esbuild(filename, source) {
+	if (source.trim().length === 0) {
+		return source;
 	}
+	const [esbuild, tsconfck] = await try_load(['esbuild','tsconfck'],'You need to install $pkg if you want to transpile TypeScript files');
+	const tsconfig = await tsconfck.parse(filename,{cache: tsconfck_cache}).tsconfig;
+	const result = await esbuild.transform(source, { loader: 'ts', tsconfigRaw: tsconfig, sourcefile: filename });
+	return result.code;
+}
+
+/**
+ * @param {string[]} packageNames packages to load
+ * @param {string} errorMessage error message for package load error, $pkg is replaced with package name
+ * @returns {Promise<any[]>} loaded packages (pkg.default || pkg)
+ */
+async function try_load(packageNames, errorMessage) {
+	return Promise.all(packageNames.map(pkg => {
+		return import(pkg).then(pkg => pkg.default || pkg,err => {
+			throw new Error(errorMessage.replace('$pkg',pkg));
+		});
+	}));
 }
