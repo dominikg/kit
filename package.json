@@ -45,7 +45,7 @@
 	"type": "module",
 	"pnpm": {
 		"overrides": {
-			"vite": "^2.7.0-beta.7"
+			"vite": "2.7.0-beta.8"
 		}
 	}
 }
