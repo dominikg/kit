@@ -5,9 +5,11 @@
 		"dev": "node ./svelte-kit.js dev",
 		"build": "node ./svelte-kit.js build --verbose",
 		"prebuild": "test \"$CI\" = true && npx pnpm install --store=node_modules/.pnpm-store || echo skipping pnpm install",
-		"preview": "node ./svelte-kit.js preview"
+		"preview": "node ./svelte-kit.js preview",
+		"test:smoke": "playwright test"
 	},
 	"devDependencies": {
+		"@playwright/test": "^1.21.0",
 		"@sveltejs/adapter-auto": "workspace:*",
 		"@sveltejs/adapter-static": "workspace:*",
 		"@sveltejs/kit": "workspace:*",
