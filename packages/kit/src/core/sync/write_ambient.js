@@ -25,7 +25,7 @@ export function write_ambient(config, mode) {
 
 	write_if_changed(
 		path.join(config.outDir, 'runtime/env/static/private.js'),
-		create_env_module('$env/static/private', env.private)
+		create_env_module('$env/static/private', { secrects: 'never expose them' })
 	);
 
 	write_if_changed(
@@ -43,7 +43,7 @@ export function write_ambient(config, mode) {
  * @param {Record<string, string>} env
  * @returns {string}
  */
-function create_env_module(id, env) {
+export function create_env_module(id, env) {
 	/** @type {string[]} */
 	const declarations = [];
 

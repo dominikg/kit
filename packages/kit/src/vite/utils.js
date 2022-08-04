@@ -127,24 +127,24 @@ export function get_aliases(config) {
 			alias.push({ find: key, replacement: path.resolve(value) });
 		}
 	}
+	const env_base = process.env.BUNDLED
+		? `${get_runtime_directory(config)}/env`
+		: path.posix.join(config.outDir, 'runtime/env');
 
-	if (!process.env.BUNDLED) {
-		alias.push(
-			{
-				find: '$env/static/public',
-				replacement: path.posix.join(config.outDir, 'runtime/env/static/public.js')
-			},
-			{
-				find: '$env/static/private',
-				replacement: path.posix.join(config.outDir, 'runtime/env/static/private.js')
-			}
-		);
-	}
-
-	alias.push({
-		find: '$env',
-		replacement: `${get_runtime_directory(config)}/env`
-	});
+	alias.push(
+		{
+			find: '$env/static/public',
+			replacement: `${env_base}/static/public.js'`
+		},
+		{
+			find: '$env/dynamic/public',
+			replacement: `${env_base}/dynamic/public.js'`
+		},
+		{
+			find: '$env/dynamic/private',
+			replacement: `${env_base}/dynamic/private.js'`
+		}
+	);
 
 	return alias;
 }
