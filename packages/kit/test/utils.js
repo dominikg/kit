@@ -145,7 +145,7 @@ if (!test_browser_device) {
 export const config = {
 	forbidOnly: !!process.env.CI,
 	// generous timeouts on CI
-	timeout: process.env.CI ? 30000 : 15000,
+	timeout: 15000,
 	webServer: {
 		command: process.env.DEV ? 'npm run dev' : 'npm run build && npm run preview',
 		port: process.env.DEV ? 5173 : 4173
@@ -171,7 +171,7 @@ export const config = {
 		screenshot: 'only-on-failure',
 		trace: 'off'
 	},
-	workers: process.env.CI ? 2 : undefined
+	workers: undefined
 };
 
 /**

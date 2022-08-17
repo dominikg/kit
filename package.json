@@ -5,7 +5,7 @@
 	"private": true,
 	"scripts": {
 		"build": "turbo run build --filter=./packages/*",
-		"test": "turbo run test --filter=./packages/* --force",
+		"test": "pnpm --dir packages/kit/test/apps/basics test",
 		"check": "turbo run check",
 		"lint": "turbo run lint",
 		"format": "turbo run format",
