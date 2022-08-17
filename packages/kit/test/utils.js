@@ -145,12 +145,13 @@ if (!test_browser_device) {
 export const config = {
 	forbidOnly: !!process.env.CI,
 	// generous timeouts on CI
-	timeout: process.env.CI ? 45000 : 15000,
+	timeout: process.env.CI ? 30000 : 15000,
 	webServer: {
 		command: process.env.DEV ? 'npm run dev' : 'npm run build && npm run preview',
 		port: process.env.DEV ? 5173 : 4173
 	},
-	retries: process.env.CI ? 5 : 0,
+	retries: process.env.CI ? 1 : 0,
+	maxFailures: 1,
 	projects: [
 		{
 			name: `${test_browser}-${process.env.DEV ? 'dev' : 'build'}`,
@@ -168,7 +169,7 @@ export const config = {
 	use: {
 		...test_browser_device,
 		screenshot: 'only-on-failure',
-		trace: 'retain-on-failure'
+		trace: 'off'
 	},
 	workers: process.env.CI ? 2 : undefined
 };
