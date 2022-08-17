@@ -160,7 +160,7 @@ test.describe('Shadowed pages', () => {
 		expect(await page.textContent('h1')).toBe('Redirection was successful');
 	});
 
-	test('Handles GET redirects with cookies', async ({ page, context, clicknav }) => {
+	test.only('Handles GET redirects with cookies', async ({ page, context, clicknav }) => {
 		await page.goto('/shadowed');
 		await clicknav('[href="/shadowed/redirect-get-with-cookie"]');
 		expect(await page.textContent('h1')).toBe('Redirection was successful');

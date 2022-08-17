@@ -143,14 +143,14 @@ if (!test_browser_device) {
 
 /** @type {import('@playwright/test').PlaywrightTestConfig} */
 export const config = {
-	forbidOnly: !!process.env.CI,
+	forbidOnly: false,
 	// generous timeouts on CI
 	timeout: 15000,
 	webServer: {
 		command: process.env.DEV ? 'npm run dev' : 'npm run build && npm run preview',
 		port: process.env.DEV ? 5173 : 4173
 	},
-	retries: process.env.CI ? 1 : 0,
+	retries: process.env.CI ? 5 : 0,
 	maxFailures: 1,
 	projects: [
 		{
@@ -159,16 +159,16 @@ export const config = {
 				javaScriptEnabled: true
 			}
 		},
-		{
+		/*{
 			name: `${test_browser}-${process.env.DEV ? 'dev' : 'build'}-no-js`,
 			use: {
 				javaScriptEnabled: false
 			}
-		}
+		}*/
 	],
 	use: {
 		...test_browser_device,
-		screenshot: 'only-on-failure',
+		screenshot: 'off',
 		trace: 'off'
 	},
 	workers: undefined

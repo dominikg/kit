@@ -3,7 +3,7 @@ import { start_server, test } from '../../../utils.js';
 
 /** @typedef {import('@playwright/test').Response} Response */
 
-test.skip(({ javaScriptEnabled }) => !javaScriptEnabled);
+test.skip(({ javaScriptEnabled }) => true);
 
 test.describe.configure({ mode: 'parallel' });
 

@@ -4,7 +4,7 @@ import { createHash, randomBytes } from 'node:crypto';
 
 /** @typedef {import('@playwright/test').Response} Response */
 
-test.skip(({ javaScriptEnabled }) => javaScriptEnabled);
+test.skip(({ javaScriptEnabled }) => true);
 
 test.describe.configure({ mode: 'parallel' });
 
