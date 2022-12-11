@@ -1,7 +1,7 @@
 import glob from 'tiny-glob/sync.js';
 import fs from 'fs';
 const changesets = glob('./*-*-*.md');
-const packages = ['@sveltejs/adapter-begin','realworld.svelte.dev','sandbox'];
+const packages = ['@sveltejs/adapter-begin','realworld.svelte.dev','sandbox','@sveltejs/vite-plugin-svelte'];
 const deleted = [];
 for (const file of changesets){
 	let changeset = fs.readFileSync(file,'utf-8');

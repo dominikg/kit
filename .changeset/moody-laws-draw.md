@@ -4,7 +4,6 @@
 '@sveltejs/app-utils': patch
 'create-svelte': patch
 '@sveltejs/kit': patch
-'@sveltejs/vite-plugin-svelte': patch
 ---
 
 Bump deps

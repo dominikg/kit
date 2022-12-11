@@ -9,7 +9,6 @@
     "@sveltejs/app-utils": "0.0.18",
     "create-svelte": "2.0.0-alpha.19",
     "@sveltejs/kit": "0.0.30",
-    "@sveltejs/vite-plugin-svelte": "0.0.1",
     "@sveltejs/adapter-cloudflare-workers": "0.0.1",
     "@sveltejs/adapter-cloudflare": "0.0.1",
     "@sveltejs/adapter-auto": "0.0.1",
