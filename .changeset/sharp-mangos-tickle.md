@@ -1,5 +1,4 @@
 ---
-'@sveltejs/adapter-begin': patch
 '@sveltejs/adapter-netlify': patch
 '@sveltejs/adapter-node': patch
 '@sveltejs/adapter-static': patch
