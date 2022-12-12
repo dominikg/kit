@@ -6,9 +6,9 @@ import { fileURLToPath } from 'url';
 // cleanup changests dir, remove all changesets and pre.json
 const changesets_dir = dirname(fileURLToPath(import.meta.url));
 const changeset_files = glob(`${changesets_dir}/*-*-*.md`)
-console.log('changests',changeset_files.length)
-//changeset_files.forEach(f => unlinkSync(f))
-//unlinkSync(`${changesets_dir}/pre.json`)
+changeset_files.forEach(f => unlinkSync(f))
+unlinkSync(`${changesets_dir}/pre.json`)
+console.log(`removed ${changeset_files.length} changesets`)
 
 // update packages
 // set version
@@ -28,6 +28,7 @@ for(const pkg_file of package_files) {
 	} else {
 		throw new Error(`invalid version ${version}, expected -next tag for ${pkg.name}`)
 	}
+	console.log(`updated ${pkg.name}@${version} to ${pkg.version}`)
 }
 
 
@@ -41,13 +42,11 @@ function update_changelog(changelog,pkg) {
 
 function changelog_entry(version) {
 	return `
-
 ## ${version}
 
 ### Major Changes
 
 First major release, see below for the history of changes that lead up to this.
 Starting from now all releases follow semver and changes will be listed as Major/Minor/Patch
-
 `
 }
